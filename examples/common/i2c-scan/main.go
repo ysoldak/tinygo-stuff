@@ -26,15 +26,16 @@ func main() {
 
 	// Wait for user to open serial console
 	for !machine.UART0.DTR() {
-		time.Sleep(100 * time.Microsecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 
-	w, r := []byte{}, []byte{0}
+	w := []byte{}
+	r := []byte{0} // shall pass at least one byte for I2C code to at all try to communicate
 	nDevices := 0
 
 	println("Scanning...")
 	for address := uint16(1); address < 127; address++ {
-		if err := machine.I2C0.Tx(address, w, r); err == nil { // try read a byte from current address
+		if err := machine.I2C0.Tx(address, w, r); err == nil { // try read a byte from the current address
 			fmt.Printf("I2C device found at address %#X !\n", address)
 			nDevices++
 		}
