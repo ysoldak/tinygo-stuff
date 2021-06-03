@@ -1,4 +1,4 @@
-package tinytest
+package main
 
 type Banana struct {
 	count int
